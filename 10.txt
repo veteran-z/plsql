@@ -1,0 +1,43 @@
+1. Write a PL/SQL block of code which raised ‘NO DATA FOUND’ exception when there is no employee
+joined in 1997 at the time of displaying 1997 joined employees.
+
+SET SURVEROUTPUT ON
+DECLARE
+vname emp.ename%type;
+vjob emp.job%type;
+BEGIN
+select ename, job into vname, vjob from emp where DOJ between ’01-JAN-97 and ’31-DEC-97’;
+dbms_output.put_line(vname ||’ ‘ || vjob);
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+dbms_output.put_line(‘No Employee hired in 1997);
+END;
+
+2. Write a PL/SQL Block of code to find the QOH amount from item_master table.
+If QOH is less than 1 raise an user define exception “INSUFFICIENT STOCK”.
+
+SET SURVEROUTPUT ON
+DECLARE
+out_of_stock EXCEPTION;
+qty_on_hand NUMBER(5);
+BEGIN
+IF qty_on_hand <1 THEN
+RAISE out_of_stock;
+END IF;
+EXCEPTION
+WHEN out_of_stock THEN
+dbms_output.put_line (“INSUFFICIENT STOCK”);
+END;
+
+3. Write a PL/SQL block of code using your own exception handling that will show 
+an error message whenever you want to insert a null value in a not null column.
+
+SET SURVEROUTPUT ON
+DECLARE
+user_error EXCEPTION;
+PRAGMA EXECPTION_INIT(user_error, -0150);
+BEGIN
+insert into emp values( NULL, ‘Subir’, ‘REARCH’, 7900, ’12-MAY-2002’, 90000,1200,200);EXECPTION
+WHEN user_error THEN
+DBMS_OUTPUT.PUT_LINE (‘CANNOT INSERT NULL VALUES’);
+END;

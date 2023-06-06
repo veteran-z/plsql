@@ -1,0 +1,94 @@
+1. Write a PL/SQL block of code to update salary of employee ‘7788’ to 35000 if the salary is less than 35000.
+
+SET SERVEROUTPUT ON
+DECLARE
+s emp1.sal%type;
+BEGIN
+SELECT sal into s from emp1 WHERE empno=7788;
+IF s<35000 THEN
+UPDATE emp1 SET sal=35000 where empno=7788;
+END IF;
+END;
+
+2. Write a PL/SQL block of code to insert all details of employee ‘7698’ to a new table temp_emp,
+which has same structure as emp table.
+
+CREATE TABLE temp_emp AS SELECT * FROM emp1 WHERE 1=2;
+SET SERVEROUTPUT ON
+DECLARE
+newrec emp1%rowtype;
+BEGIN
+SELECT * INTO newrec FROM emp1 WHERE empno=7698;
+INSERT INTO temp_emp VALUES (newrec.empno, newrec.ename,newrec.job, newrec.mgr,
+			     newrec.hiredate, newrec.sal, newrec.comm, newrec.deptno);
+END;
+
+3. Write a PL/SQL block of code to display ones name like “Hello <Name>’, whatever the name you have entered at run time.
+
+SET SERVEROUTPUT ON
+DECLARE
+a VARCHAR2(10);
+BEGIN
+a :='&a';
+dbms_output.put_line('HELLO'||a);
+END;
+
+4.Write a PL/SQL block of code to print first 50 whole no.
+
+SET SERVEROUTPUT ON
+DECLARE
+a NUMBER(2);
+BEGIN
+FOR a in 1..50
+LOOP
+dbms_output.put_line('value'||a);
+END LOOP;
+END;
+
+5. Write a PL/SQL block of code to update the commission of employee number
+7369 to Rs. 3000 if it NULL; else raise his commission by 25%.
+
+SET SERVEROUTPUT ON
+DECLARE
+c emp1.comm%type;
+BEGIN
+SELECT comm into c from emp1 WHERE empno=7369;
+IF c IS NULL THEN
+UPDATE emp1 SET comm=3000 WHERE empno=7369;
+ELSE
+c := c*1.25;
+UPDATE emp1 SET comm=c WHERE empno=7369;
+END IF;
+END;
+
+6. Write a PL/SQL block of code to print even number between 1 and 10 using for loop.
+
+SET SERVEROUTPUT ON
+DECLARE
+a NUMBER;
+r NUMBER;
+BEGIN
+FOR a IN 1..10 LOOP
+r :=MOD(a,2);
+IF r=0 THEN
+dbms_output.put_line('Even No'||a);
+END IF;
+END LOOP;
+END;
+
+7.Write a PL/SQL block of code that will allow 5% salary increment of an employee (emp number
+should be taken from user) if the employee working in the organization more than 22 year.
+
+SET SERVEROUTPUT ON
+DECLARE
+emp_no emp.empno%type;
+salary emp.sal%type;
+hire_month number(4);
+BEGIN
+emp_no :=&emp_no;
+select MONTH_BETWEEN(sysdate, hiredate) into hire_month from emp where
+empno=emp_no;
+if (hire_month > 12*22) then
+update emp set sal =sal*1.05where empno = emp_no;
+end if;
+END;
